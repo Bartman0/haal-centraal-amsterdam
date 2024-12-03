@@ -38,6 +38,13 @@ paths:
 
         Default krijg je personen terug die nog in leven zijn, tenzij je de inclusiefoverledenpersonen=true opgeeft.
       operationId: Personen
+      parameters:
+        - $ref: "#/components/parameters/X_User"
+          required: true
+        - $ref: "#/components/parameters/X_Correlation_ID"
+          required: true
+        - $ref: "#/components/parameters/X_Task_Description"
+          required: true
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -56,12 +63,6 @@ paths:
               $ref: "#/components/headers/X_Rate_Limit_Remaining"
             X-Rate-Limit-Reset:
               $ref: "#/components/headers/X_Rate_Limit_Reset"
-            X-User:
-              $ref: "#/components/headers/X_User"
-            X-Correlation-ID:
-              $ref: "#/components/headers/X_Correlation_ID"
-            X-Task-Description:
-              $ref: "#/components/headers/X_Task_Description"
           content:
             application/json; charset=utf-8:
               schema:
@@ -2105,6 +2106,34 @@ components:
         application/problem+json:
           schema:
             $ref: "#/components/schemas/Foutbericht"
+  parameters:
+    X_User:
+      in: header
+      name: X-User
+      schema:
+        type: string
+      description:
+          "gebruikersnaam of identificatie binnen de bevragende applicatie; bij voorkeur\
+          \ EntraID UPN als hiervan gebruik gemaakt wordt, anders email adres, en anders een account ID"
+    X_Correlation_ID:
+      in: header
+      name: X-Correlation-ID
+      schema:
+        type: string
+      description:
+          "session/correlation ID, dient te worden aangegeven door de afnemende applicatie als\
+          \ koppeling naar de logging die wordt gedaan in de applicatie zelf; doelstelling is\
+          \ om specifieke logging van de applicatie te kunnen koppelen aan de bevragingen die zijn uitgevoerd"
+    X_Task_Description:
+      in: header
+      name: X-Task-Description
+      schema:
+        type: string
+        description:
+          "gebruikstaakaanduiding, dient te worden aangegeven door de afnemende applicatie; dit is\
+          \ een vrije tekst en hierover zullen afspraken vastleggen in de transparantiedocumentatie;\
+          \ het is vooral een hulpmiddel om taken die binnen de applicatie worden uitgevoerd in het\
+          \ kader van protocollering meteen al vast te leggen"
   headers:
     warning:
       schema:
@@ -2128,24 +2157,3 @@ components:
     X_Rate_Limit_Reset:
       schema:
         type: integer
-    X_User:
-      schema:
-        type: string
-        description:
-          "gebruikersnaam of identificatie binnen de bevragende applicatie; bij voorkeur\
-          \ EntraID UPN als hiervan gebruik gemaakt wordt, anders email adres, en anders een account ID"
-    X_Correlation_ID:
-      schema:
-        type: string
-        description:
-          "session/correlation ID, dient te worden aangegeven door de afnemende applicatie als\
-          \ koppeling naar de logging die wordt gedaan in de applicatie zelf; doelstelling is\
-          \ om specifieke logging van de applicatie te kunnen koppelen aan de bevragingen die zijn uitgevoerd"
-    X_Task_Description:
-      schema:
-        type: string
-        description:
-          "gebruikstaakaanduiding, dient te worden aangegeven door de afnemende applicatie; dit is\
-          \ een vrije tekst en hierover zullen afspraken vastleggen in de transparantiedocumentatie;\
-          \ het is vooral een hulpmiddel om taken die binnen de applicatie worden uitgevoerd in het\
-          \ kader van protocollering meteen al vast te leggen"
